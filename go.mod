@@ -1,4 +1,4 @@
-module lklogger
+module github.com/lktop/lklogger
 
 go 1.17
 
