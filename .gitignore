@@ -16,3 +16,6 @@
 
 # log file
 log/
+
+# idea cache
+.idea/
