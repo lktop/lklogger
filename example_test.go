@@ -35,3 +35,13 @@ func TestC(t *testing.T) {
 	callErrorFunc()
 }
 
+func TestD(t *testing.T) {
+	callErrorFunc := func(){
+		log.Error("hello error")
+	}
+	log = NewLKLoggerAll(true,true)
+	log.Debug("hello debug")
+	log.Info("hello info")
+	log.Warn("hello warn")
+	callErrorFunc()
+}

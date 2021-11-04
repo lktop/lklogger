@@ -153,3 +153,56 @@ func NewLKLogger(callerPath bool,StackTrace bool)*zap.Logger {
 	log = zap.New(zapcore.NewTee(coreArr...),lzapOption...)
 	return log
 }
+
+func NewLKLoggerAll(callerPath bool,StackTrace bool)*zap.Logger {
+	var coreArr []zapcore.Core
+
+	//获取编码器
+	ConosleEncoder := zapcore.NewConsoleEncoder(GetConsoleEncoder())
+	FileEncoder := zapcore.NewConsoleEncoder(GetFileEncoder())
+
+	//日志级别
+	highPriority := zap.LevelEnablerFunc(func(lev zapcore.Level) bool{	//error级别
+		return lev >= zap.ErrorLevel
+	})
+	lowPriority := zap.LevelEnablerFunc(func(lev zapcore.Level) bool {	//info和debug级别,debug级别是最低的
+		return lev < zap.ErrorLevel && lev >= zap.DebugLevel
+	})
+
+	//info文件writeSyncer
+	infoFileWriteSyncer := zapcore.AddSync(&lumberjack.Logger{
+		Filename:   "./log/all_log.log", 	//日志文件存放目录，如果文件夹不存在会自动创建
+		MaxSize:    2,            		//文件大小限制,单位MB
+		MaxBackups: 100,            	//最大保留日志文件数量
+		MaxAge:     30,           		//日志文件保留天数
+		Compress:   false,        		//是否压缩处理
+	})
+
+	InfoConsoleCore := zapcore.NewCore(ConosleEncoder, zapcore.AddSync(os.Stdout), lowPriority) 	//第三个及之后的参数为写入文件的日志级别,ErrorLevel模式只记录error级别的日志
+	InfoFileCore := zapcore.NewCore(FileEncoder, infoFileWriteSyncer, lowPriority) 					//第三个及之后的参数为写入文件的日志级别,ErrorLevel模式只记录error级别的日志
+	coreArr = append(coreArr, InfoConsoleCore)
+	coreArr = append(coreArr, InfoFileCore)
+
+	errorFileWriteSyncer := zapcore.AddSync(&lumberjack.Logger{
+		Filename:   "./log/all_log.log", 		//日志文件存放目录
+		MaxSize:    1,            			//文件大小限制,单位MB
+		MaxBackups: 5,            			//最大保留日志文件数量
+		MaxAge:     30,           			//日志文件保留天数
+		Compress:   false,        			//是否压缩处理
+	})
+	errorConsoleCore := zapcore.NewCore(ConosleEncoder, zapcore.AddSync(os.Stdout), highPriority) //第三个及之后的参数为写入文件的日志级别,ErrorLevel模式只记录error级别的日志
+	errorFileCore := zapcore.NewCore(FileEncoder, errorFileWriteSyncer, highPriority) //第三个及之后的参数为写入文件的日志级别,ErrorLevel模式只记录error级别的日志
+	coreArr = append(coreArr, errorConsoleCore)
+	coreArr = append(coreArr, errorFileCore)
+
+	var log *zap.Logger
+	var lzapOption []zap.Option
+	if callerPath{
+		lzapOption = append(lzapOption, zap.AddCaller())  //zap.AddCaller()为显示文件名和行号，可省略
+	}
+	if StackTrace{
+		lzapOption = append(lzapOption, zap.AddStacktrace(zapcore.ErrorLevel))  //zap.AddStacktrace()为显示调用堆栈
+	}
+	log = zap.New(zapcore.NewTee(coreArr...),lzapOption...)
+	return log
+}
