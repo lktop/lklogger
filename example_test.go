@@ -4,7 +4,7 @@ import (
 	"testing"
 )
 
-var log *lkLogger
+var log *LkLogger
 
 func TestA(t *testing.T) {
 	log = NewLKLogger(false,false)

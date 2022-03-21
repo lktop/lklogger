@@ -21,39 +21,39 @@ var (
 	colorDPanic            = colorful.Red.Sprintf("[DPANIC]")
 )
 
-type lkLogger struct {
+type LkLogger struct {
 	zapLog *zap.Logger
 }
 
-func (l *lkLogger) Debug(s string)  {
+func (l *LkLogger) Debug(s string)  {
 	l.zapLog.Debug(s)
 }
 
-func (l *lkLogger) Info(s string)  {
+func (l *LkLogger) Info(s string)  {
 	l.zapLog.Info(s)
 }
 
-func (l *lkLogger) Warn(s string)  {
+func (l *LkLogger) Warn(s string)  {
 	l.zapLog.Warn(s)
 }
 
-func (l *lkLogger) Error(s string)  {
+func (l *LkLogger) Error(s string)  {
 	l.zapLog.Error(s)
 }
 
-func (l *lkLogger) DebugSf(format string,v ...interface{})  {
+func (l *LkLogger) DebugSf(format string,v ...interface{})  {
 	l.zapLog.Debug(fmt.Sprintf(format,v...))
 }
 
-func (l *lkLogger) InfoSf(format string,v ...interface{})  {
+func (l *LkLogger) InfoSf(format string,v ...interface{})  {
 	l.zapLog.Info(fmt.Sprintf(format,v...))
 }
 
-func (l *lkLogger) WarnSf(format string,v ...interface{})  {
+func (l *LkLogger) WarnSf(format string,v ...interface{})  {
 	l.zapLog.Warn(fmt.Sprintf(format,v...))
 }
 
-func (l *lkLogger) ErrorSf(format string,v ...interface{})  {
+func (l *LkLogger) ErrorSf(format string,v ...interface{})  {
 	l.zapLog.Error(fmt.Sprintf(format,v...))
 }
 
@@ -137,7 +137,7 @@ func GetFileEncoder() zapcore.EncoderConfig{
 	return ConsoleEncoderConfig
 }
 
-func NewLKLogger(callerPath bool,StackTrace bool)*lkLogger {
+func NewLKLogger(callerPath bool,StackTrace bool)*LkLogger {
 	var coreArr []zapcore.Core
 
 	//获取编码器
@@ -187,10 +187,10 @@ func NewLKLogger(callerPath bool,StackTrace bool)*lkLogger {
 		lZapOption = append(lZapOption, zap.AddStacktrace(zapcore.ErrorLevel))  //zap.AddStacktrace()为显示调用堆栈
 	}
 	zapLog = zap.New(zapcore.NewTee(coreArr...),lZapOption...)
-	return &lkLogger{zapLog: zapLog}
+	return &LkLogger{zapLog: zapLog}
 }
 
-func NewLKLoggerAll(callerPath bool,StackTrace bool)*lkLogger {
+func NewLKLoggerAll(callerPath bool,StackTrace bool)*LkLogger {
 	var coreArr []zapcore.Core
 
 	//获取编码器
@@ -234,5 +234,5 @@ func NewLKLoggerAll(callerPath bool,StackTrace bool)*lkLogger {
 		lZapOption = append(lZapOption, zap.AddStacktrace(zapcore.ErrorLevel))  //zap.AddStacktrace()为显示调用堆栈
 	}
 	zapLog = zap.New(zapcore.NewTee(coreArr...),lZapOption...)
-	return &lkLogger{zapLog: zapLog}
+	return &LkLogger{zapLog: zapLog}
 }
