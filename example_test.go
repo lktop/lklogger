@@ -1,12 +1,10 @@
 package lklogger
 
 import (
-	"go.uber.org/zap"
 	"testing"
 )
 
-var log *zap.Logger
-
+var log *lkLogger
 
 func TestA(t *testing.T) {
 	log = NewLKLogger(false,false)
@@ -14,6 +12,11 @@ func TestA(t *testing.T) {
 	log.Info("hello info")
 	log.Warn("hello warn")
 	log.Error("hello error")
+
+	log.DebugSf("hello debug %s","123")
+	log.InfoSf("hello info %s","123")
+	log.WarnSf("hello warn %s","123")
+	log.ErrorSf("hello error %s","123")
 }
 
 func TestB(t *testing.T) {

@@ -21,6 +21,42 @@ var (
 	colorDPanic            = colorful.Red.Sprintf("[DPANIC]")
 )
 
+type lkLogger struct {
+	zapLog *zap.Logger
+}
+
+func (l *lkLogger) Debug(s string)  {
+	l.zapLog.Debug(s)
+}
+
+func (l *lkLogger) Info(s string)  {
+	l.zapLog.Info(s)
+}
+
+func (l *lkLogger) Warn(s string)  {
+	l.zapLog.Warn(s)
+}
+
+func (l *lkLogger) Error(s string)  {
+	l.zapLog.Error(s)
+}
+
+func (l *lkLogger) DebugSf(format string,v ...interface{})  {
+	l.zapLog.Debug(fmt.Sprintf(format,v...))
+}
+
+func (l *lkLogger) InfoSf(format string,v ...interface{})  {
+	l.zapLog.Info(fmt.Sprintf(format,v...))
+}
+
+func (l *lkLogger) WarnSf(format string,v ...interface{})  {
+	l.zapLog.Warn(fmt.Sprintf(format,v...))
+}
+
+func (l *lkLogger) ErrorSf(format string,v ...interface{})  {
+	l.zapLog.Error(fmt.Sprintf(format,v...))
+}
+
 // CONSOLE OUT
 
 func ConsoleTimeEncode (t time.Time, enc zapcore.PrimitiveArrayEncoder){
@@ -101,7 +137,7 @@ func GetFileEncoder() zapcore.EncoderConfig{
 	return ConsoleEncoderConfig
 }
 
-func NewLKLogger(callerPath bool,StackTrace bool)*zap.Logger {
+func NewLKLogger(callerPath bool,StackTrace bool)*lkLogger {
 	var coreArr []zapcore.Core
 
 	//获取编码器
@@ -142,19 +178,19 @@ func NewLKLogger(callerPath bool,StackTrace bool)*zap.Logger {
 	coreArr = append(coreArr, errorConsoleCore)
 	coreArr = append(coreArr, errorFileCore)
 
-	var log *zap.Logger
-	var lzapOption []zap.Option
+	var zapLog *zap.Logger
+	var lZapOption []zap.Option
 	if callerPath{
-		lzapOption = append(lzapOption, zap.AddCaller())  //zap.AddCaller()为显示文件名和行号，可省略
+		lZapOption = append(lZapOption, zap.AddCaller())  //zap.AddCaller()为显示文件名和行号，可省略
 	}
 	if StackTrace{
-		lzapOption = append(lzapOption, zap.AddStacktrace(zapcore.ErrorLevel))  //zap.AddStacktrace()为显示调用堆栈
+		lZapOption = append(lZapOption, zap.AddStacktrace(zapcore.ErrorLevel))  //zap.AddStacktrace()为显示调用堆栈
 	}
-	log = zap.New(zapcore.NewTee(coreArr...),lzapOption...)
-	return log
+	zapLog = zap.New(zapcore.NewTee(coreArr...),lZapOption...)
+	return &lkLogger{zapLog: zapLog}
 }
 
-func NewLKLoggerAll(callerPath bool,StackTrace bool)*zap.Logger {
+func NewLKLoggerAll(callerPath bool,StackTrace bool)*lkLogger {
 	var coreArr []zapcore.Core
 
 	//获取编码器
@@ -189,14 +225,14 @@ func NewLKLoggerAll(callerPath bool,StackTrace bool)*zap.Logger {
 	coreArr = append(coreArr, errorConsoleCore)
 	coreArr = append(coreArr, errorFileCore)
 
-	var log *zap.Logger
-	var lzapOption []zap.Option
+	var zapLog *zap.Logger
+	var lZapOption []zap.Option
 	if callerPath{
-		lzapOption = append(lzapOption, zap.AddCaller())  //zap.AddCaller()为显示文件名和行号，可省略
+		lZapOption = append(lZapOption, zap.AddCaller())  //zap.AddCaller()为显示文件名和行号，可省略
 	}
 	if StackTrace{
-		lzapOption = append(lzapOption, zap.AddStacktrace(zapcore.ErrorLevel))  //zap.AddStacktrace()为显示调用堆栈
+		lZapOption = append(lZapOption, zap.AddStacktrace(zapcore.ErrorLevel))  //zap.AddStacktrace()为显示调用堆栈
 	}
-	log = zap.New(zapcore.NewTee(coreArr...),lzapOption...)
-	return log
+	zapLog = zap.New(zapcore.NewTee(coreArr...),lZapOption...)
+	return &lkLogger{zapLog: zapLog}
 }
