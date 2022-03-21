@@ -22,39 +22,39 @@ var (
 )
 
 type LkLogger struct {
-	zapLog *zap.Logger
+	ZapLog *zap.Logger
 }
 
 func (l *LkLogger) Debug(s string)  {
-	l.zapLog.Debug(s)
+	l.ZapLog.Debug(s)
 }
 
 func (l *LkLogger) Info(s string)  {
-	l.zapLog.Info(s)
+	l.ZapLog.Info(s)
 }
 
 func (l *LkLogger) Warn(s string)  {
-	l.zapLog.Warn(s)
+	l.ZapLog.Warn(s)
 }
 
 func (l *LkLogger) Error(s string)  {
-	l.zapLog.Error(s)
+	l.ZapLog.Error(s)
 }
 
 func (l *LkLogger) DebugSf(format string,v ...interface{})  {
-	l.zapLog.Debug(fmt.Sprintf(format,v...))
+	l.ZapLog.Debug(fmt.Sprintf(format,v...))
 }
 
 func (l *LkLogger) InfoSf(format string,v ...interface{})  {
-	l.zapLog.Info(fmt.Sprintf(format,v...))
+	l.ZapLog.Info(fmt.Sprintf(format,v...))
 }
 
 func (l *LkLogger) WarnSf(format string,v ...interface{})  {
-	l.zapLog.Warn(fmt.Sprintf(format,v...))
+	l.ZapLog.Warn(fmt.Sprintf(format,v...))
 }
 
 func (l *LkLogger) ErrorSf(format string,v ...interface{})  {
-	l.zapLog.Error(fmt.Sprintf(format,v...))
+	l.ZapLog.Error(fmt.Sprintf(format,v...))
 }
 
 // CONSOLE OUT
@@ -187,7 +187,7 @@ func NewLKLogger(callerPath bool,StackTrace bool)*LkLogger {
 		lZapOption = append(lZapOption, zap.AddStacktrace(zapcore.ErrorLevel))  //zap.AddStacktrace()为显示调用堆栈
 	}
 	zapLog = zap.New(zapcore.NewTee(coreArr...),lZapOption...)
-	return &LkLogger{zapLog: zapLog}
+	return &LkLogger{ZapLog: zapLog}
 }
 
 func NewLKLoggerAll(callerPath bool,StackTrace bool)*LkLogger {
@@ -234,5 +234,5 @@ func NewLKLoggerAll(callerPath bool,StackTrace bool)*LkLogger {
 		lZapOption = append(lZapOption, zap.AddStacktrace(zapcore.ErrorLevel))  //zap.AddStacktrace()为显示调用堆栈
 	}
 	zapLog = zap.New(zapcore.NewTee(coreArr...),lZapOption...)
-	return &LkLogger{zapLog: zapLog}
+	return &LkLogger{ZapLog: zapLog}
 }
