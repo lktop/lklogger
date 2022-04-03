@@ -7,20 +7,20 @@ import (
 var log *LkLogger
 
 func TestA(t *testing.T) {
-	log = NewLKLogger(false,false)
+	log = NewLKLogger(false, false)
 	log.Debug("hello debug")
 	log.Info("hello info")
 	log.Warn("hello warn")
 	log.Error("hello error")
 
-	log.DebugSf("hello debug %s","123")
-	log.InfoSf("hello info %s","123")
-	log.WarnSf("hello warn %s","123")
-	log.ErrorSf("hello error %s","123")
+	log.DebugSf("hello debug %s", "123")
+	log.InfoSf("hello info %s", "123")
+	log.WarnSf("hello warn %s", "123")
+	log.ErrorSf("hello error %s", "123")
 }
 
 func TestB(t *testing.T) {
-	log = NewLKLogger(true,false)
+	log = NewLKLogger(true, false)
 	log.Debug("hello debug")
 	log.Info("hello info")
 	log.Warn("hello warn")
@@ -28,10 +28,10 @@ func TestB(t *testing.T) {
 }
 
 func TestC(t *testing.T) {
-	callErrorFunc := func(){
+	callErrorFunc := func() {
 		log.Error("hello error")
 	}
-	log = NewLKLogger(true,true)
+	log = NewLKLogger(true, true)
 	log.Debug("hello debug")
 	log.Info("hello info")
 	log.Warn("hello warn")
@@ -39,10 +39,10 @@ func TestC(t *testing.T) {
 }
 
 func TestD(t *testing.T) {
-	callErrorFunc := func(){
+	callErrorFunc := func() {
 		log.Error("hello error")
 	}
-	log = NewLKLoggerAll(true,true)
+	log = NewLKLoggerAll(true, true, "./log/test.log")
 	log.Debug("hello debug")
 	log.Info("hello info")
 	log.Warn("hello warn")
