@@ -21,39 +21,39 @@ var (
 )
 
 type LkLogger struct {
-	ZapLog *zap.Logger
+	zap.Logger
 }
 
 func (l *LkLogger) Debug(s string) {
-	l.ZapLog.Debug(s)
+	l.Debug(s)
 }
 
 func (l *LkLogger) Info(s string) {
-	l.ZapLog.Info(s)
+	l.Info(s)
 }
 
 func (l *LkLogger) Warn(s string) {
-	l.ZapLog.Warn(s)
+	l.Warn(s)
 }
 
 func (l *LkLogger) Error(s string) {
-	l.ZapLog.Error(s)
+	l.Error(s)
 }
 
 func (l *LkLogger) DebugSf(format string, v ...interface{}) {
-	l.ZapLog.Debug(fmt.Sprintf(format, v...))
+	l.Debug(fmt.Sprintf(format, v...))
 }
 
 func (l *LkLogger) InfoSf(format string, v ...interface{}) {
-	l.ZapLog.Info(fmt.Sprintf(format, v...))
+	l.Info(fmt.Sprintf(format, v...))
 }
 
 func (l *LkLogger) WarnSf(format string, v ...interface{}) {
-	l.ZapLog.Warn(fmt.Sprintf(format, v...))
+	l.Warn(fmt.Sprintf(format, v...))
 }
 
 func (l *LkLogger) ErrorSf(format string, v ...interface{}) {
-	l.ZapLog.Error(fmt.Sprintf(format, v...))
+	l.Error(fmt.Sprintf(format, v...))
 }
 
 // CONSOLE OUT
@@ -136,7 +136,7 @@ func GetFileEncoder() zapcore.EncoderConfig {
 	return ConsoleEncoderConfig
 }
 
-func NewLKLogger(callerPath bool, StackTrace bool) *LkLogger {
+func NewLKLogger(callerPath bool, StackTrace bool) *zap.Logger {
 	var coreArr []zapcore.Core
 
 	//获取编码器
@@ -186,10 +186,10 @@ func NewLKLogger(callerPath bool, StackTrace bool) *LkLogger {
 		lZapOption = append(lZapOption, zap.AddStacktrace(zapcore.ErrorLevel)) //zap.AddStacktrace()为显示调用堆栈
 	}
 	zapLog = zap.New(zapcore.NewTee(coreArr...), lZapOption...)
-	return &LkLogger{ZapLog: zapLog}
+	return zapLog
 }
 
-func NewLKLoggerAll(callerPath bool, StackTrace bool, filePath string) *LkLogger {
+func NewLKLoggerAll(callerPath bool, StackTrace bool, filePath string) *zap.Logger {
 	var coreArr []zapcore.Core
 
 	//获取编码器
@@ -232,5 +232,5 @@ func NewLKLoggerAll(callerPath bool, StackTrace bool, filePath string) *LkLogger
 		lZapOption = append(lZapOption, zap.AddStacktrace(zapcore.ErrorLevel)) //zap.AddStacktrace()为显示调用堆栈
 	}
 	zapLog = zap.New(zapcore.NewTee(coreArr...), lZapOption...)
-	return &LkLogger{ZapLog: zapLog}
+	return zapLog
 }
