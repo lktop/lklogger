@@ -136,7 +136,7 @@ func GetFileEncoder() zapcore.EncoderConfig {
 	return ConsoleEncoderConfig
 }
 
-func NewLKLogger(callerPath bool, StackTrace bool) *zap.Logger {
+func NewLKLogger(callerPath bool, StackTrace bool) *LkLogger {
 	var coreArr []zapcore.Core
 
 	//获取编码器
@@ -186,10 +186,10 @@ func NewLKLogger(callerPath bool, StackTrace bool) *zap.Logger {
 		lZapOption = append(lZapOption, zap.AddStacktrace(zapcore.ErrorLevel)) //zap.AddStacktrace()为显示调用堆栈
 	}
 	zapLog = zap.New(zapcore.NewTee(coreArr...), lZapOption...)
-	return zapLog
+	return &LkLogger{*zapLog}
 }
 
-func NewLKLoggerAll(callerPath bool, StackTrace bool, filePath string) *zap.Logger {
+func NewLKLoggerAll(callerPath bool, StackTrace bool, filePath string) *LkLogger {
 	var coreArr []zapcore.Core
 
 	//获取编码器
@@ -232,5 +232,5 @@ func NewLKLoggerAll(callerPath bool, StackTrace bool, filePath string) *zap.Logg
 		lZapOption = append(lZapOption, zap.AddStacktrace(zapcore.ErrorLevel)) //zap.AddStacktrace()为显示调用堆栈
 	}
 	zapLog = zap.New(zapcore.NewTee(coreArr...), lZapOption...)
-	return zapLog
+	return &LkLogger{*zapLog}
 }
