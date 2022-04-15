@@ -25,35 +25,35 @@ type LkLogger struct {
 }
 
 func (l *LkLogger) Debug(s string) {
-	l.Debug(s)
+	l.Logger.Debug(s)
 }
 
 func (l *LkLogger) Info(s string) {
-	l.Info(s)
+	l.Logger.Info(s)
 }
 
 func (l *LkLogger) Warn(s string) {
-	l.Warn(s)
+	l.Logger.Warn(s)
 }
 
 func (l *LkLogger) Error(s string) {
-	l.Error(s)
+	l.Logger.Error(s)
 }
 
 func (l *LkLogger) DebugSf(format string, v ...interface{}) {
-	l.Debug(fmt.Sprintf(format, v...))
+	l.Logger.Debug(fmt.Sprintf(format, v...))
 }
 
 func (l *LkLogger) InfoSf(format string, v ...interface{}) {
-	l.Info(fmt.Sprintf(format, v...))
+	l.Logger.Info(fmt.Sprintf(format, v...))
 }
 
 func (l *LkLogger) WarnSf(format string, v ...interface{}) {
-	l.Warn(fmt.Sprintf(format, v...))
+	l.Logger.Warn(fmt.Sprintf(format, v...))
 }
 
 func (l *LkLogger) ErrorSf(format string, v ...interface{}) {
-	l.Error(fmt.Sprintf(format, v...))
+	l.Logger.Error(fmt.Sprintf(format, v...))
 }
 
 // CONSOLE OUT
