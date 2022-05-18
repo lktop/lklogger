@@ -181,6 +181,7 @@ func NewLKLogger(callerPath bool, StackTrace bool) *LkLogger {
 	var lZapOption []zap.Option
 	if callerPath {
 		lZapOption = append(lZapOption, zap.AddCaller()) //zap.AddCaller()为显示文件名和行号，可省略
+		lZapOption = append(lZapOption, zap.AddCallerSkip(1)) //由于封装了 往上跳一层
 	}
 	if StackTrace {
 		lZapOption = append(lZapOption, zap.AddStacktrace(zapcore.ErrorLevel)) //zap.AddStacktrace()为显示调用堆栈
@@ -227,6 +228,7 @@ func NewLKLoggerAll(callerPath bool, StackTrace bool, filePath string) *LkLogger
 	var lZapOption []zap.Option
 	if callerPath {
 		lZapOption = append(lZapOption, zap.AddCaller()) //zap.AddCaller()为显示文件名和行号，可省略
+		lZapOption = append(lZapOption, zap.AddCallerSkip(1)) //由于封装了 往上跳一层
 	}
 	if StackTrace {
 		lZapOption = append(lZapOption, zap.AddStacktrace(zapcore.ErrorLevel)) //zap.AddStacktrace()为显示调用堆栈
