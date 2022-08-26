@@ -136,7 +136,7 @@ func GetFileEncoder() zapcore.EncoderConfig {
 	return ConsoleEncoderConfig
 }
 
-func NewLKLogger(callerPath bool, StackTrace bool) *LkLogger {
+func NewLKLogger(callerPath bool, StackTrace bool, skipArgs ...int) *LkLogger {
 	var coreArr []zapcore.Core
 
 	//获取编码器
@@ -181,7 +181,11 @@ func NewLKLogger(callerPath bool, StackTrace bool) *LkLogger {
 	var lZapOption []zap.Option
 	if callerPath {
 		lZapOption = append(lZapOption, zap.AddCaller()) //zap.AddCaller()为显示文件名和行号，可省略
-		lZapOption = append(lZapOption, zap.AddCallerSkip(1)) //由于封装了 往上跳一层
+		skip := 1
+		if len(skipArgs) > 0 {
+			skip = skipArgs[0]
+		}
+		lZapOption = append(lZapOption, zap.AddCallerSkip(skip)) //由于封装了 往上跳一层
 	}
 	if StackTrace {
 		lZapOption = append(lZapOption, zap.AddStacktrace(zapcore.ErrorLevel)) //zap.AddStacktrace()为显示调用堆栈
@@ -190,7 +194,7 @@ func NewLKLogger(callerPath bool, StackTrace bool) *LkLogger {
 	return &LkLogger{*zapLog}
 }
 
-func NewLKLoggerAll(callerPath bool, StackTrace bool, filePath string) *LkLogger {
+func NewLKLoggerAll(callerPath bool, StackTrace bool, filePath string, skipArgs ...int) *LkLogger {
 	var coreArr []zapcore.Core
 
 	//获取编码器
@@ -228,7 +232,11 @@ func NewLKLoggerAll(callerPath bool, StackTrace bool, filePath string) *LkLogger
 	var lZapOption []zap.Option
 	if callerPath {
 		lZapOption = append(lZapOption, zap.AddCaller()) //zap.AddCaller()为显示文件名和行号，可省略
-		lZapOption = append(lZapOption, zap.AddCallerSkip(1)) //由于封装了 往上跳一层
+		skip := 1
+		if len(skipArgs) > 0 {
+			skip = skipArgs[0]
+		}
+		lZapOption = append(lZapOption, zap.AddCallerSkip(skip)) //由于封装了 往上跳一层
 	}
 	if StackTrace {
 		lZapOption = append(lZapOption, zap.AddStacktrace(zapcore.ErrorLevel)) //zap.AddStacktrace()为显示调用堆栈

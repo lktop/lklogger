@@ -20,7 +20,7 @@ func TestA(t *testing.T) {
 }
 
 func TestB(t *testing.T) {
-	log = NewLKLogger(true, false)
+	log = NewLKLogger(true, false, 1)
 	log.Debug("hello debug")
 	log.Info("hello info")
 	log.Warn("hello warn")
