@@ -156,7 +156,7 @@ func NewLKLogger(callerPath bool, StackTrace bool, skipArgs ...int) *LkLogger {
 		Filename:   "./log/info.log", //日志文件存放目录，如果文件夹不存在会自动创建
 		MaxSize:    2,                //文件大小限制,单位MB
 		MaxBackups: 100,              //最大保留日志文件数量
-		MaxAge:     30,               //日志文件保留天数
+		MaxAge:     300,              //日志文件保留天数
 		Compress:   false,            //是否压缩处理
 	})
 
@@ -167,9 +167,9 @@ func NewLKLogger(callerPath bool, StackTrace bool, skipArgs ...int) *LkLogger {
 
 	errorFileWriteSyncer := zapcore.AddSync(&lumberjack.Logger{
 		Filename:   "./log/error.log", //日志文件存放目录
-		MaxSize:    1,                 //文件大小限制,单位MB
-		MaxBackups: 5,                 //最大保留日志文件数量
-		MaxAge:     30,                //日志文件保留天数
+		MaxSize:    2,                 //文件大小限制,单位MB
+		MaxBackups: 100,               //最大保留日志文件数量
+		MaxAge:     300,               //日志文件保留天数
 		Compress:   false,             //是否压缩处理
 	})
 	errorConsoleCore := zapcore.NewCore(ConosleEncoder, zapcore.AddSync(os.Stdout), highPriority) //第三个及之后的参数为写入文件的日志级别,ErrorLevel模式只记录error级别的日志
@@ -213,8 +213,8 @@ func NewLKLoggerAll(callerPath bool, StackTrace bool, filePath string, skipArgs 
 	FileWriteSyncer := zapcore.AddSync(&lumberjack.Logger{
 		Filename:   filePath, //日志文件存放目录，如果文件夹不存在会自动创建
 		MaxSize:    2,        //文件大小限制,单位MB
-		MaxBackups: 100,      //最大保留日志文件数量
-		MaxAge:     30,       //日志文件保留天数
+		MaxBackups: 10000,    //最大保留日志文件数量
+		MaxAge:     900,      //日志文件保留天数
 		Compress:   false,    //是否压缩处理
 	})
 
